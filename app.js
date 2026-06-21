@@ -108,6 +108,13 @@
       window.__domainTabsInit = true;
     }
 
+    // Only auto-rotate the opener's AI-insight tabs while actually on that page
+    if (JOURNEY_SECTIONS[index].id === 'usecase'){
+      startOpenerRotation();
+    } else {
+      stopOpenerRotation();
+    }
+
     // Refresh Joule suggestions contextually
     refreshJouleSuggestions();
   }
@@ -128,7 +135,9 @@
 
     // Scroll active rail item into view
     const activeRail = document.querySelector('.rail-item.is-active');
-    if (activeRail) activeRail.scrollIntoView({ block:'nearest', behavior:'smooth' });
+    if (activeRail && typeof activeRail.scrollIntoView === 'function'){
+      activeRail.scrollIntoView({ block:'nearest', behavior:'smooth' });
+    }
 
     // Dark hero chrome toggle
     const isDark = sec.kind === 'dark';
@@ -264,6 +273,94 @@
     });
   }
 
+  /* ---------- Opener AI-insight tabs (interactive, auto-rotating) ---------- */
+  let openerRotateTimer = null;
+  let openerActiveIndex = 0;
+
+  function renderOpenerInsight(index, fromAutoRotate){
+    if (typeof OPENER_INSIGHTS === 'undefined' || !OPENER_INSIGHTS[index]) return;
+    const data = OPENER_INSIGHTS[index];
+    const textEl = document.getElementById('openerInsightText');
+    const signalEl = document.getElementById('openerInsightSignal');
+    const tabsWrap = document.getElementById('openerInsightTabs');
+    const dotsWrap = document.getElementById('openerInsightDots');
+    if (!textEl || !signalEl) return;
+
+    openerActiveIndex = index;
+
+    // Fade the text/signal out, swap content, fade back in — small but
+    // genuinely felt transition rather than an instant content jump.
+    textEl.style.opacity = '0';
+    signalEl.style.opacity = '0';
+    setTimeout(() => {
+      textEl.innerHTML = data.text;
+      const signalSpan = signalEl.querySelector('span');
+      if (signalSpan) signalSpan.textContent = data.signal;
+      textEl.style.opacity = '1';
+      signalEl.style.opacity = '1';
+    }, 180);
+
+    if (tabsWrap){
+      tabsWrap.querySelectorAll('.opener__insight-tab').forEach(btn => {
+        btn.classList.toggle('is-active', parseInt(btn.dataset.insight, 10) === index);
+      });
+    }
+    if (dotsWrap){
+      dotsWrap.querySelectorAll('.opener__insight-dot').forEach(dot => {
+        dot.classList.toggle('is-active', parseInt(dot.dataset.insight, 10) === index);
+      });
+    }
+  }
+
+  function startOpenerRotation(){
+    stopOpenerRotation();
+    openerRotateTimer = setInterval(() => {
+      const next = (openerActiveIndex + 1) % OPENER_INSIGHTS.length;
+      renderOpenerInsight(next, true);
+    }, 6000);
+  }
+
+  function stopOpenerRotation(){
+    if (openerRotateTimer){ clearInterval(openerRotateTimer); openerRotateTimer = null; }
+  }
+
+  function initOpenerInsights(){
+    const tabsWrap = document.getElementById('openerInsightTabs');
+    const dotsWrap = document.getElementById('openerInsightDots');
+    if (!tabsWrap || typeof OPENER_INSIGHTS === 'undefined') return;
+
+    // Build the progress dots dynamically from however many insights exist
+    if (dotsWrap && !dotsWrap.dataset.built){
+      dotsWrap.innerHTML = OPENER_INSIGHTS.map((d, i) =>
+        `<button class="opener__insight-dot${i===0?' is-active':''}" data-insight="${i}" role="tab" aria-label="Show ${d.label} insight"></button>`
+      ).join('');
+      dotsWrap.dataset.built = 'true';
+    }
+
+    function selectInsight(index){
+      renderOpenerInsight(index, false);
+      // A manual choice pauses auto-rotation briefly so the person's pick
+      // actually stays on screen, then resumes the ambient rotation.
+      stopOpenerRotation();
+      setTimeout(startOpenerRotation, 9000);
+    }
+
+    tabsWrap.addEventListener('click', (e) => {
+      const btn = e.target.closest('.opener__insight-tab');
+      if (!btn) return;
+      selectInsight(parseInt(btn.dataset.insight, 10));
+    });
+    if (dotsWrap){
+      dotsWrap.addEventListener('click', (e) => {
+        const dot = e.target.closest('.opener__insight-dot');
+        if (!dot) return;
+        selectInsight(parseInt(dot.dataset.insight, 10));
+      });
+    }
+
+    startOpenerRotation();
+  }
+
   /* ---------- Domain tabs (Assistant Overview interactive catalog) ---------- */
   function initDomainTabs(){
     const tabsEl = document.getElementById('domainTabs');
@@ -386,6 +483,9 @@
     if (document.hidden){
       stopAllVideos(null);
       closeVideoModal();
+      stopOpenerRotation();
+    } else if (JOURNEY_SECTIONS[currentIndex] && JOURNEY_SECTIONS[currentIndex].id === 'usecase'){
+      startOpenerRotation();
     }
   });
 
@@ -396,6 +496,7 @@
     wireNav();
     wireVideoFrames();
     initVideoModal();
+    initOpenerInsights();
     initJouleWidget();
 
     // Optional deep-link: #section=<id> or #idx=<n> (also used for QA)

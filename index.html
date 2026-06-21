@@ -345,6 +345,13 @@ h1,h2,h3,h4,p{ margin:0; }
   animation: sectionIn 0.55s var(--ease);
 }
 .section.is-active{ display:block; }
+/* The opening "storytelling" page is a single self-contained card meant to
+   fit one screen — it doesn't need the generous padding every other
+   (scrollable) section gets, so it gets a tighter frame instead, freeing up
+   real vertical room for the card itself. */
+#sec-usecase{
+  padding: clamp(10px, 1.6vh, 24px) clamp(16px, 2vw, 32px) clamp(8px, 1.2vh, 16px);
+}
 @keyframes sectionIn{
   from{ opacity:0; transform: translateY(14px); }
   to{ opacity:1; transform: translateY(0); }
@@ -608,44 +615,99 @@ h1,h2,h3,h4,p{ margin:0; }
   border-radius: var(--radius-lg);
   overflow:hidden;
   background: var(--grad-hero);
-  padding: 36px 44px 30px;
+  padding: clamp(14px, 3vh, 32px) clamp(20px, 3vw, 44px) clamp(12px, 2.4vh, 26px);
   isolation:isolate;
-  min-height: 460px;
+  min-height: 380px;
   display:flex;
   flex-direction:column;
   justify-content:space-between;
+  gap: clamp(6px, 1.4vh, 16px);
 }
-@media (min-height: 740px){
-  .opener{ height: calc(100vh - var(--brandbar-height) - var(--pagenav-height) - var(--footer-height) - 96px); }
+/* The card sizes itself to whatever its content actually needs (height:auto,
+   the default). On most laptop/desktop windows that comfortably fits one
+   screen on its own. If a window is narrow enough that wrapped text genuinely
+   needs more room than that, the PAGE scrolls — same as every other section
+   on this platform — rather than clipping content or hiding it behind an
+   internal scrollbar a person might not notice. Nothing is ever hidden. */
+@media (min-width: 1180px) and (min-height: 720px){
+  .opener{
+    height: calc(100vh - var(--brandbar-height) - var(--pagenav-height) - var(--footer-height) - 48px);
+  }
+}
+/* Type and spacing scale continuously with available height via clamp(),
+   rather than jumping between fixed sizes at a breakpoint — that earlier
+   approach left a seam right at the boundary where neither rule fully
+   applied, which is exactly what caused content to overlap itself. */
+.opener__title{ font-size: clamp(17px, 2.6vh, 30px) !important; }
+.opener__eyebrow{ margin-bottom: clamp(6px, 1vh, 14px) !important; font-size: clamp(10.5px, 1.05vh, 12px) !important; padding: clamp(4px, 0.6vh, 6px) clamp(10px, 1vw, 14px) clamp(4px, 0.6vh, 6px) clamp(8px, 0.8vw, 10px) !important; }
+.opener__sub{
+  margin-top: clamp(4px, 0.8vh, 12px) !important;
+  font-size: clamp(11.5px, 1.5vh, 14px) !important;
+  line-height:1.4 !important;
+}
+/* Two separate triggers for the same line-clamp: a tall-but-cramped screen
+   (short height) needs it, AND a narrower screen needs it at a more
+   generous height too, since less width means each line of prose wraps
+   sooner and the paragraph silently grows taller than expected — that
+   second case was the actual cause of the bottom row overlapping the
+   footer on screens like 1280×768, even though 768px alone looked fine
+   on a wider screen. */
+@media (max-height: 760px){
+  .opener__sub{
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
+}
+@media (max-width: 1320px) and (max-height: 900px){
+  .opener__sub{
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
+}
+.opener__top{ gap: clamp(14px, 2vw, 32px) !important; }
+.opener__mid{ gap: clamp(10px, 1.4vw, 24px) !important; margin: 0 !important; }
+.opener__bottom{ margin-top: clamp(2px, 0.4vh, 6px) !important; }
+.opener__stat{ padding: clamp(8px, 1vh, 12px) clamp(10px, 1vw, 12px) !important; }
+.opener__stat-num{ font-size: clamp(18px, 2.4vh, 28px) !important; }
+.opener__stat-label{ font-size: clamp(10px, 1.1vh, 11px) !important; line-height:1.3 !important; }
+.opener__insight{ padding: clamp(8px, 1.2vh, 14px) clamp(12px, 1.2vw, 16px) !important; }
+.opener__insight-head{ margin-bottom:clamp(4px, 0.7vh, 8px) !important; gap:5px 8px !important; }
+.opener__insight-title{ font-size: clamp(10px, 1vh, 11px) !important; }
+.opener__insight-tab{ font-size: clamp(9px, 0.95vh, 10.5px) !important; padding: 3px clamp(7px, 0.8vw, 10px) !important; }
+.opener__insight-text{
+  font-size: clamp(11.5px, 1.25vh, 12.5px) !important;
+  line-height:1.4 !important;
 }
 @media (max-height: 760px){
-  .opener{
-    padding: 18px 28px 16px;
-    justify-content: flex-start;
-    gap: 10px;
-    max-height: calc(100vh - var(--brandbar-height) - var(--pagenav-height) - var(--footer-height) - 32px);
-    overflow:hidden;
+  .opener__insight-text{
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    overflow: hidden;
   }
-  .opener__title{ font-size: clamp(18px, 1.9vw, 24px) !important; }
-  .opener__sub{ font-size: 12.5px !important; line-height:1.45 !important; }
-  .opener__top{ gap: 18px !important; }
-  .opener__mid{ gap: 12px !important; margin: 0 !important; }
-  .opener__bottom{ margin-top: 4px !important; }
-  .opener__stat{ padding: 10px 12px !important; }
-  .opener__stat-num{ font-size: 20px !important; }
-  .opener__stat-label{ font-size: 10.5px !important; line-height:1.3 !important; }
-  .opener__insight{ padding: 10px 14px !important; }
-  .opener__insight-title{ font-size: 10.5px !important; margin-bottom:4px !important; }
-  .opener__insight-text{ font-size: 12px !important; line-height:1.4 !important; }
-  .opener__flow{ gap: 10px !important; }
-  .opener__flow-step strong{ font-size: 12.5px !important; }
-  .opener__flow-step span{ font-size: 11px !important; }
-  .opener__portfolio{ padding: 10px 14px !important; }
-  .opener__portfolio-label{ font-size: 10.5px !important; margin-bottom:8px !important; }
-  .opener__portfolio-chips{ gap:6px !important; }
-  .opener__portfolio-chips .chip{ font-size: 10.5px !important; padding: 4px 9px !important; }
-  .opener__cta{ padding: 10px 20px !important; font-size:13.5px !important; }
 }
+@media (max-width: 1320px) and (max-height: 900px){
+  .opener__insight-text{
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+  }
+}
+.opener__insight-signal{ margin-top:clamp(7px, 1vh, 10px) !important; padding-top:clamp(5px, 0.8vh, 10px) !important; font-size:clamp(10px, 1.05vh, 11px) !important; }
+.opener__insight-dots{ margin-top:clamp(5px, 0.7vh, 10px) !important; }
+.opener__flow{ gap: clamp(8px, 1.2vw, 16px) !important; }
+.opener__flow-step strong{ font-size: clamp(12px, 1.3vh, 13.5px) !important; }
+.opener__flow-step span{ font-size: clamp(10.5px, 1.1vh, 11.5px) !important; }
+.opener__portfolio{ padding: clamp(8px, 1.2vh, 16px) clamp(12px, 1.2vw, 18px) !important; }
+.opener__portfolio-label{ font-size: clamp(10px, 1.05vh, 11px) !important; margin-bottom:clamp(6px, 0.8vh, 10px) !important; }
+.opener__portfolio-chips{ gap:clamp(5px, 0.7vh, 8px) !important; }
+.opener__portfolio-chips .chip{ font-size: clamp(10px, 1.05vh, 11px) !important; padding: 3px clamp(8px, 0.9vw, 11px) !important; }
+.opener__cta{ padding: clamp(9px, 1.1vh, 12px) clamp(18px, 1.8vw, 24px) !important; font-size:clamp(13px, 1.3vh, 14px) !important; }
 .opener::before{
   content:'';
   position:absolute; top:0; right:0; bottom:0; left:0; z-index:0;
@@ -701,6 +763,9 @@ h1,h2,h3,h4,p{ margin:0; }
   border: 1px solid rgba(255,255,255,0.14);
   border-radius: var(--radius-md);
   padding: 16px 18px;
+  align-self: flex-start;
+  max-height: clamp(76px, 22vh, 132px);
+  overflow-y: auto;
 }
 .opener__portfolio-label{
   font-size:11px; font-weight:700; letter-spacing:0.05em; text-transform:uppercase;
@@ -759,18 +824,112 @@ h1,h2,h3,h4,p{ margin:0; }
   border: 1px solid rgba(255,255,255,0.14);
   border-radius: var(--radius-md);
   padding: 14px 16px;
+  display:flex;
+  flex-direction:column;
+  max-height: clamp(140px, 32vh, 260px);
+  overflow-y: auto;
+}
+.opener__insight-head{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:8px 14px;
+  margin-bottom:8px;
 }
 .opener__insight-title{
   font-size:11px; font-weight:700; letter-spacing:0.05em; text-transform:uppercase;
   color: var(--blue-3);
-  margin-bottom:6px;
+  flex-shrink:0;
+  display:flex; align-items:center; gap:6px;
+}
+.opener__insight-title::before{
+  content:'';
+  width:6px; height:6px; border-radius:50%;
+  background: #4ADE80;
+  box-shadow: 0 0 0 0 rgba(74,222,128,0.6);
+  animation: openerPulse 2s ease-in-out infinite;
+  flex-shrink:0;
+}
+@keyframes openerPulse{
+  0%{ box-shadow: 0 0 0 0 rgba(74,222,128,0.55); }
+  70%{ box-shadow: 0 0 0 6px rgba(74,222,128,0); }
+  100%{ box-shadow: 0 0 0 0 rgba(74,222,128,0); }
+}
+.opener__insight-tabs{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+}
+.opener__insight-tab{
+  appearance:none;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.05);
+  color: rgba(255,255,255,0.65);
+  font-family: var(--font-body);
+  font-size:10.5px;
+  font-weight:600;
+  letter-spacing:0.01em;
+  padding: 4px 10px;
+  border-radius: 999px;
+  cursor:pointer;
+  transition: all 0.2s var(--ease);
+  white-space:nowrap;
+}
+.opener__insight-tab:hover{
+  border-color: rgba(255,255,255,0.4);
+  color:#fff;
+  background: rgba(255,255,255,0.1);
+}
+.opener__insight-tab.is-active{
+  background: linear-gradient(120deg, var(--blue-7), var(--indigo-7));
+  border-color: transparent;
+  color:#fff;
+  box-shadow: 0 4px 14px rgba(0,112,242,0.35);
 }
 .opener__insight-text{
   font-size:12.5px;
   line-height:1.5;
   color: rgba(255,255,255,0.78);
+  transition: opacity 0.18s ease;
+  flex:1;
 }
 .opener__insight-text em{ font-style:normal; color:#fff; font-weight:600; }
+.opener__insight-signal{
+  display:flex;
+  align-items:flex-start;
+  gap:8px;
+  margin-top:10px;
+  padding-top:10px;
+  border-top: 1px dashed rgba(255,255,255,0.18);
+  font-size:11px;
+  line-height:1.45;
+  color: var(--blue-3);
+  transition: opacity 0.18s ease;
+}
+.opener__insight-signal svg{ width:14px; height:14px; flex-shrink:0; margin-top:1px; }
+.opener__insight-dots{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  margin-top:10px;
+}
+.opener__insight-dot{
+  appearance:none;
+  border:none;
+  padding:0;
+  width:6px; height:6px;
+  border-radius:50%;
+  background: rgba(255,255,255,0.25);
+  cursor:pointer;
+  transition: all 0.25s var(--ease);
+}
+.opener__insight-dot:hover{ background: rgba(255,255,255,0.5); }
+.opener__insight-dot.is-active{
+  width:18px;
+  border-radius:4px;
+  background: linear-gradient(90deg, var(--blue-7), var(--indigo-7));
+}
 
 .opener__bottom{
   display:flex;
@@ -1609,6 +1768,30 @@ h1,h2,h3,h4,p{ margin:0; }
    slot, per the agreed structure.
    ============================================================ */
 
+/* ---------- Interactive AI insight tabs for the opening storytelling page ---------- */
+const OPENER_INSIGHTS = [
+  {
+    label: 'Financial Investment',
+    text: `AMG already monitors performance and benchmarks every portfolio company. AI doesn't replace that judgment — it removes the lag between a signal appearing <em>anywhere</em> in the Group (a bank's exposure, a build cost in Egypt, a market shift in Real Estate) and a decision-maker seeing it. One picture, every sector, continuously.`,
+    signal: `Live signal: a covenant shift at one bank surfaces group-wide exposure before quarter close, not after.`
+  },
+  {
+    label: 'Food & Consumer',
+    text: `Mayar Foods alone holds a 22% share of the Saudi rice market; Savola's stakes in Almarai and Herfy span dairy and quick-service food; Panda Retail moves household goods through stores trusted in 30 countries. AI ties demand signals from the shelf back to procurement and the balance sheet in one motion, instead of three separate monthly reports arriving three different ways.`,
+    signal: `Live signal: a demand spike at Panda is matched against Mayar's rice supply position the same day, not at next month's review.`
+  },
+  {
+    label: 'Industrial & Infrastructure',
+    text: `From Al Yamamah Steel to Acwa, Bawan, and DataVolt, the Industrial &amp; Infrastructure sector runs on long, capital-heavy cycles where a single delayed shipment or energy-price swing can ripple across multiple plants at once. AI watches those cycles continuously, so a cost pressure in one facility is visible across the whole portfolio <em>before</em> it shows up in next quarter's numbers.`,
+    signal: `Live signal: a raw-material cost spike at one steel facility flags margin risk across every linked project, in real time.`
+  },
+  {
+    label: 'Real Estate',
+    text: `Rafal, Thabat, and Ajdan each run multi-year developments — like Burj Rafal or the new $5bn Oman venture — where construction pace, financing cost, and market demand all move independently. AI ties those threads together as they happen, turning scattered project updates into one live read on the whole development pipeline.`,
+    signal: `Live signal: a financing-rate move is matched instantly against every active development's exposure, not discovered at the next review.`
+  }
+];
+
 const JOURNEY_SECTIONS = [
 
 /* ============================================================
@@ -1657,9 +1840,22 @@ const JOURNEY_SECTIONS = [
           <div class="opener__stat"><div class="opener__stat-num">10+</div><div class="opener__stat-label">banking, VC &amp; PE relationships in Financial Investment alone</div></div>
           <div class="opener__stat"><div class="opener__stat-num">1</div><div class="opener__stat-label">foundation needed to see it all at once</div></div>
         </div>
-        <div class="opener__insight">
-          <div class="opener__insight-title">The AI insight</div>
-          <p class="opener__insight-text">AMG already monitors performance and benchmarks every portfolio company. AI doesn't replace that judgment — it removes the lag between a signal appearing <em>anywhere</em> in the Group (a bank's exposure, a build cost in Egypt, a market shift in Real Estate) and a decision-maker seeing it. One picture, every sector, continuously.</p>
+        <div class="opener__insight" id="openerInsight">
+          <div class="opener__insight-head">
+            <div class="opener__insight-title">The AI insight</div>
+            <div class="opener__insight-tabs" id="openerInsightTabs">
+              <button class="opener__insight-tab is-active" data-insight="0" aria-label="Financial Investment insight">Financial Investment</button>
+              <button class="opener__insight-tab" data-insight="1" aria-label="Food &amp; Consumer insight">Food &amp; Consumer</button>
+              <button class="opener__insight-tab" data-insight="2" aria-label="Industrial &amp; Infrastructure insight">Industrial &amp; Infrastructure</button>
+              <button class="opener__insight-tab" data-insight="3" aria-label="Real Estate insight">Real Estate</button>
+            </div>
+          </div>
+          <p class="opener__insight-text" id="openerInsightText">AMG already monitors performance and benchmarks every portfolio company. AI doesn't replace that judgment — it removes the lag between a signal appearing <em>anywhere</em> in the Group (a bank's exposure, a build cost in Egypt, a market shift in Real Estate) and a decision-maker seeing it. One picture, every sector, continuously.</p>
+          <div class="opener__insight-signal" id="openerInsightSignal">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M13 2L3 14h8l-1 8 10-12h-8l1-8z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+            <span>Live signal: a covenant shift at one bank surfaces group-wide exposure before quarter close, not after.</span>
+          </div>
+          <div class="opener__insight-dots" id="openerInsightDots" role="tablist" aria-label="Auto-rotating sector insights"></div>
         </div>
       </div>
 
@@ -1726,7 +1922,7 @@ const JOURNEY_SECTIONS = [
 },
 
 /* ============================================================
-   03 — SAP BUSINESS DATA CLOUD (placeholder — content pending)
+   03 — SAP BUSINESS DATA CLOUD
    ============================================================ */
 {
   id: 'bdc',
@@ -1739,9 +1935,74 @@ const JOURNEY_SECTIONS = [
       <p class="subhead">The unified data foundation that makes everything that follows possible.</p>
     </div>
 
-    <div class="placeholder-banner">
-      <svg viewBox="0 0 24 24" fill="none"><path d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      <p>This section is reserved for your SAP Business Data Cloud content. Once you share the source material, it will be built into this slot using the same interactive storytelling style as the rest of the journey — keeping its place in the sequence right after the Al Muhaidib use case and team introduction.</p>
+    <div class="diagram-panel" style="margin-bottom:36px;">
+      <img src="media/img/bdc-architecture.png" alt="SAP Business Data Cloud architecture — AI Agents (Joule Agents, Intelligent content), Knowledge Core (SAP Datasphere, SAP Analytics Cloud), and Intelligent Compute (SAP HANA Cloud, SAP Databricks, SAP Snowflake), built on Business Data Fabric and Master Data Governance" loading="lazy">
+    </div>
+
+    <div class="section-head">
+      <div class="eyebrow">See it live</div>
+      <h3 class="headline" style="font-size:clamp(24px,2.8vw,32px);">Inside SAP Business Data Cloud</h3>
+    </div>
+
+    <div style="margin-bottom:36px;">
+      <div class="grid grid-2">
+        <div>
+          <div class="video-frame" data-video-id="v-bdc-just-ask" data-modal="true">
+            <video src="media/video/just-ask.mp4" data-src="media/video/just-ask.mp4" preload="none" playsinline></video>
+            <button class="video-frame__play" aria-label="Play Just Ask demo">
+              <span class="video-frame__play-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M8 5v14l11-7-11-7z" fill="currentColor"/></svg></span>
+            </button>
+            <span class="video-frame__label"><span class="rec-dot"></span> Just Ask</span>
+          </div>
+          <p class="video-caption">Just Ask — asking SAP Business Data Cloud a question in plain language and getting a governed answer back.</p>
+        </div>
+        <div>
+          <div class="video-frame" data-video-id="v-bdc-investment-details" data-modal="true">
+            <video src="media/video/investment-details.mp4" data-src="media/video/investment-details.mp4" preload="none" playsinline></video>
+            <button class="video-frame__play" aria-label="Play Investment Details demo">
+              <span class="video-frame__play-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M8 5v14l11-7-11-7z" fill="currentColor"/></svg></span>
+            </button>
+            <span class="video-frame__label"><span class="rec-dot"></span> Investment Details</span>
+          </div>
+          <p class="video-caption">Investment Details — drilling into a single investment with full context, sourced from the unified data foundation.</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:36px;">
+      <div class="grid grid-2">
+        <div>
+          <div class="video-frame" data-video-id="v-bdc-financial-statement" data-modal="true">
+            <video src="media/video/financial-statement.mp4" data-src="media/video/financial-statement.mp4" preload="none" playsinline></video>
+            <button class="video-frame__play" aria-label="Play Financial Statement demo">
+              <span class="video-frame__play-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M8 5v14l11-7-11-7z" fill="currentColor"/></svg></span>
+            </button>
+            <span class="video-frame__label"><span class="rec-dot"></span> Financial Statement</span>
+          </div>
+          <p class="video-caption">Financial Statement — a consolidated financial view built on governed, AI-ready data.</p>
+        </div>
+        <div>
+          <div class="video-frame" data-video-id="v-bdc-compass-simulation" data-modal="true">
+            <video src="media/video/compass-simulation.mp4" data-src="media/video/compass-simulation.mp4" preload="none" playsinline></video>
+            <button class="video-frame__play" aria-label="Play Compass Simulation demo">
+              <span class="video-frame__play-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M8 5v14l11-7-11-7z" fill="currentColor"/></svg></span>
+            </button>
+            <span class="video-frame__label"><span class="rec-dot"></span> Compass Simulation</span>
+          </div>
+          <p class="video-caption">Compass Simulation — modeling a scenario forward and seeing the impact ripple across the portfolio.</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:44px; max-width:calc(50% - 12px);">
+      <div class="video-frame" data-video-id="v-bdc-agh-landing" data-modal="true">
+        <video src="media/video/agh-landing-page.mp4" data-src="media/video/agh-landing-page.mp4" preload="none" playsinline></video>
+        <button class="video-frame__play" aria-label="Play AGH Landing Page demo">
+          <span class="video-frame__play-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M8 5v14l11-7-11-7z" fill="currentColor"/></svg></span>
+        </button>
+        <span class="video-frame__label"><span class="rec-dot"></span> AGH Landing Page</span>
+      </div>
+      <p class="video-caption">AGH Landing Page — the entry point into the experience, where the story begins.</p>
     </div>
 
     <div class="grid grid-3">
@@ -2171,7 +2432,7 @@ const JOURNEY_SECTIONS = [
       <p class="subhead">The same Joule intelligence Al Muhaidib's business users rely on — purpose-built for SAP development teams, from full-stack application work to ABAP migration.</p>
     </div>
 
-<div style="margin-bottom:32px;">
+      <div style="margin-bottom:32px;">
       <div class="video-frame" data-video-id="v-jfd-overview">
         <video src="media/video/joule-for-developers-overview.mp4" data-src="media/video/joule-for-developers-overview.mp4" preload="none" playsinline></video>
         <button class="video-frame__play" aria-label="Play Joule for Developers overview demo">
@@ -2665,6 +2926,13 @@ const JOULE_SUGGESTIONS = {
       window.__domainTabsInit = true;
     }
 
+    // Only auto-rotate the opener's AI-insight tabs while actually on that page
+    if (JOURNEY_SECTIONS[index].id === 'usecase'){
+      startOpenerRotation();
+    } else {
+      stopOpenerRotation();
+    }
+
     // Refresh Joule suggestions contextually
     refreshJouleSuggestions();
   }
@@ -2685,7 +2953,9 @@ const JOULE_SUGGESTIONS = {
 
     // Scroll active rail item into view
     const activeRail = document.querySelector('.rail-item.is-active');
-    if (activeRail) activeRail.scrollIntoView({ block:'nearest', behavior:'smooth' });
+    if (activeRail && typeof activeRail.scrollIntoView === 'function'){
+      activeRail.scrollIntoView({ block:'nearest', behavior:'smooth' });
+    }
 
     // Dark hero chrome toggle
     const isDark = sec.kind === 'dark';
@@ -2821,6 +3091,94 @@ const JOULE_SUGGESTIONS = {
     });
   }
 
+  /* ---------- Opener AI-insight tabs (interactive, auto-rotating) ---------- */
+  let openerRotateTimer = null;
+  let openerActiveIndex = 0;
+
+  function renderOpenerInsight(index, fromAutoRotate){
+    if (typeof OPENER_INSIGHTS === 'undefined' || !OPENER_INSIGHTS[index]) return;
+    const data = OPENER_INSIGHTS[index];
+    const textEl = document.getElementById('openerInsightText');
+    const signalEl = document.getElementById('openerInsightSignal');
+    const tabsWrap = document.getElementById('openerInsightTabs');
+    const dotsWrap = document.getElementById('openerInsightDots');
+    if (!textEl || !signalEl) return;
+
+    openerActiveIndex = index;
+
+    // Fade the text/signal out, swap content, fade back in — small but
+    // genuinely felt transition rather than an instant content jump.
+    textEl.style.opacity = '0';
+    signalEl.style.opacity = '0';
+    setTimeout(() => {
+      textEl.innerHTML = data.text;
+      const signalSpan = signalEl.querySelector('span');
+      if (signalSpan) signalSpan.textContent = data.signal;
+      textEl.style.opacity = '1';
+      signalEl.style.opacity = '1';
+    }, 180);
+
+    if (tabsWrap){
+      tabsWrap.querySelectorAll('.opener__insight-tab').forEach(btn => {
+        btn.classList.toggle('is-active', parseInt(btn.dataset.insight, 10) === index);
+      });
+    }
+    if (dotsWrap){
+      dotsWrap.querySelectorAll('.opener__insight-dot').forEach(dot => {
+        dot.classList.toggle('is-active', parseInt(dot.dataset.insight, 10) === index);
+      });
+    }
+  }
+
+  function startOpenerRotation(){
+    stopOpenerRotation();
+    openerRotateTimer = setInterval(() => {
+      const next = (openerActiveIndex + 1) % OPENER_INSIGHTS.length;
+      renderOpenerInsight(next, true);
+    }, 6000);
+  }
+
+  function stopOpenerRotation(){
+    if (openerRotateTimer){ clearInterval(openerRotateTimer); openerRotateTimer = null; }
+  }
+
+  function initOpenerInsights(){
+    const tabsWrap = document.getElementById('openerInsightTabs');
+    const dotsWrap = document.getElementById('openerInsightDots');
+    if (!tabsWrap || typeof OPENER_INSIGHTS === 'undefined') return;
+
+    // Build the progress dots dynamically from however many insights exist
+    if (dotsWrap && !dotsWrap.dataset.built){
+      dotsWrap.innerHTML = OPENER_INSIGHTS.map((d, i) =>
+        `<button class="opener__insight-dot${i===0?' is-active':''}" data-insight="${i}" role="tab" aria-label="Show ${d.label} insight"></button>`
+      ).join('');
+      dotsWrap.dataset.built = 'true';
+    }
+
+    function selectInsight(index){
+      renderOpenerInsight(index, false);
+      // A manual choice pauses auto-rotation briefly so the person's pick
+      // actually stays on screen, then resumes the ambient rotation.
+      stopOpenerRotation();
+      setTimeout(startOpenerRotation, 9000);
+    }
+
+    tabsWrap.addEventListener('click', (e) => {
+      const btn = e.target.closest('.opener__insight-tab');
+      if (!btn) return;
+      selectInsight(parseInt(btn.dataset.insight, 10));
+    });
+    if (dotsWrap){
+      dotsWrap.addEventListener('click', (e) => {
+        const dot = e.target.closest('.opener__insight-dot');
+        if (!dot) return;
+        selectInsight(parseInt(dot.dataset.insight, 10));
+      });
+    }
+
+    startOpenerRotation();
+  }
+
   /* ---------- Domain tabs (Assistant Overview interactive catalog) ---------- */
   function initDomainTabs(){
     const tabsEl = document.getElementById('domainTabs');
@@ -2943,6 +3301,9 @@ const JOULE_SUGGESTIONS = {
     if (document.hidden){
       stopAllVideos(null);
       closeVideoModal();
+      stopOpenerRotation();
+    } else if (JOURNEY_SECTIONS[currentIndex] && JOURNEY_SECTIONS[currentIndex].id === 'usecase'){
+      startOpenerRotation();
     }
   });
 
@@ -2953,6 +3314,7 @@ const JOULE_SUGGESTIONS = {
     wireNav();
     wireVideoFrames();
     initVideoModal();
+    initOpenerInsights();
     initJouleWidget();
 
     // Optional deep-link: #section=<id> or #idx=<n> (also used for QA)

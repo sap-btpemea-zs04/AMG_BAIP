@@ -52,9 +52,9 @@ then open `http://localhost:8080`.
 |---|---|
 | The Challenge (Al Muhaidib use case) | Complete |
 | Your Hosts (presenter intro) | Complete — Amal Al-Rebh and Zainab Abdulsalam, with photos |
-| SAP Business Data Cloud | **Placeholder** — waiting on your source material |
+| SAP Business Data Cloud | Diagram and copy complete. **5 video placeholders waiting on real files** — overview, SAP Datasphere, SAP Analytics Cloud, Joule Agents on BDC, and Master Data Governance. See "Adding videos to placeholder slots" below. |
 | How It's Built, Joule Beyond Chat, Autonomous Suite, Assistant Catalog, Finance Spotlight, What Changes, HR in Action | Complete — built from your approved SAP decks |
-| Joule for Developers | **Placeholder videos** — the wheel diagram is in; the two demo videos (overview + Application Generation) are waiting on real files. See "Adding the two Joule for Developers videos" below. |
+| Joule for Developers | **Placeholder videos** — the wheel diagram is in; the two demo videos (overview + Application Generation) are waiting on real files. See "Adding videos to placeholder slots" below. |
 | Build Your Own Agent (Joule Studio overview) | Complete |
 | → Live workshop hand-off (QR code + steps) | QR code is live. Steps are written from the workshop title only — the source PDF still wasn't shared, so it's worth checking them against the real guide before presenting |
 | Joule for Consultants | Complete |
@@ -63,6 +63,28 @@ then open `http://localhost:8080`.
 
 ## Recent revisions
 
+- **SAP Business Data Cloud page rebuilt.** The real architecture diagram (AI Agents, Knowledge
+  Core, Intelligent Compute, Business Data Fabric, Master Data Governance) is in, along with
+  5 video slots — each one already wired exactly like the videos on the "What Changes" page,
+  meaning the moment a real file is dropped in, clicking play opens it in the same centered
+  pop-up player, with the same close behavior. They're placeholders only because the actual
+  video files haven't been uploaded yet (same situation as the two Joule for Developers videos).
+- **Fixed for real this time: the opening page's bottom row was getting cut off.** Took a few
+  passes to find the actual cause — it wasn't just short screens, it was narrower ones too.
+  At widths like 1280px, the AI insight paragraph wrapped onto extra lines, which quietly
+  pushed the card taller than the space available and shoved "Begin the journey" and the
+  SAP Business Data Cloud → Business AI Platform → Joule row down behind the bottom bar. The
+  card now accounts for both dimensions together, with paragraphs that gracefully shorten
+  instead of silently growing the card. Tested across nine combinations of width and height,
+  from a small laptop window up to a 1920×1080 monitor — confirmed clean, nothing hidden or
+  overlapping, at every one.
+- **The opening page's AI insight is now genuinely interactive.** It now covers all four AMG
+  sectors — Financial Investment, Food & Consumer (Mayar Foods, Savola/Almarai, Panda Retail),
+  Industrial & Infrastructure, and Real Estate — each with its own real example and a "live
+  signal" callout. Click any tab or dot to switch instantly, or leave it alone and it rotates
+  through all four on its own every 6 seconds (pausing politely if you click something, and
+  pausing entirely if you navigate to another page or the browser tab loses focus). Verified
+  with a real headless-browser test of every click path, not just visually.
 - **Opening page rebuilt as a single-screen story.** "The Challenge" now fits on one screen
   with no scrolling, even on shorter laptop displays — a self-introduction grounded in AMG's
   real history (founded 1943), a chip-list of actual portfolio companies (SAB, Saudi National
@@ -70,37 +92,55 @@ then open `http://localhost:8080`.
   an investment-specific AI insight, and the SAP Business Data Cloud → SAP Business AI
   Platform → Joule flow, all visible together.
 
-## Adding the two Joule for Developers videos
+## Adding videos to placeholder slots
 
-These two video files couldn't be uploaded through any available channel (project upload,
-zip, and chat attachment all rejected `.mp4`/archives), so the page currently ships with two
-clearly-labeled placeholder slots instead of broken video players. To add them yourself once
-you have the files in hand:
+There are 7 video slots across the platform still waiting on real files — 5 on the SAP Business
+Data Cloud page, 2 on Joule for Developers. None of these could be uploaded directly (project
+upload, zip, and chat attachment all reject `.mp4` and archives in this environment), so each
+ships as a clearly-labeled placeholder instead of a broken player. They're already wired the
+same way every working video on the platform is — same pop-up player, same play/close
+behavior — so adding a real file is a drop-in swap, not new development.
 
-1. Rename your two source files to match what the code expects:
-   - `joule-for-developers-overview.mp4`
-   - `joule-application-generation-demo.mp4`
-2. Drop both into `media/video/`, alongside the other 12 videos already there.
-3. In `content.js` (and the matching block inside `index.html`), search for
-   `pending upload` and replace the two placeholder `<div class="video-frame video-frame--pending">`
-   blocks with real `<video>` markup — copy the exact pattern used by any other working video
-   on the page (e.g. search for `v-hr-agent` for a working example to mirror).
+**SAP Business Data Cloud (5 slots):**
 
-No other file needs to change, and nothing else on the platform depends on this — every other
-video, the modal pop-up player, navigation, and all 15 sections work today regardless of whether
-these two are filled in.
+| Placeholder | Suggested filename |
+|---|---|
+| SAP Business Data Cloud overview | `bdc-overview.mp4` |
+| SAP Datasphere demo | `bdc-datasphere-demo.mp4` |
+| SAP Analytics Cloud demo | `bdc-analytics-cloud-demo.mp4` |
+| Joule Agents on BDC demo | `bdc-joule-agents-demo.mp4` |
+| Master Data Governance demo | `bdc-master-data-governance-demo.mp4` |
 
+**Joule for Developers (2 slots):**
 
+| Placeholder | Suggested filename |
+|---|---|
+| Joule for Developers walkthrough | `joule-for-developers-overview.mp4` |
+| Application Generation demo | `joule-application-generation-demo.mp4` |
 
-Each placeholder section is clearly marked in the platform itself with an amber banner, so it
-won't be mistaken for finished content if presented as-is.
+**To add a file:**
+
+1. Rename it to match the filename you'll use (the suggestions above, or your own — just stay
+   consistent with what you put in the code).
+2. Drop it into `media/video/`, alongside the videos already there.
+3. In `content.js` (and the matching block inside `index.html`), search for the placeholder's
+   exact wording — e.g. `This slot is reserved for the SAP Datasphere demo` — to find the right
+   `<div class="video-frame video-frame--pending">` block, then replace it with real `<video>`
+   markup. Copy the exact pattern from any working video elsewhere on the page (search for
+   `v-hr-agent` for a simple example, or `v-ar-finance` for one that already uses the pop-up
+   player the same way these placeholders will).
+
+No other file needs to change. Every other video, the pop-up player, navigation, and all 15
+sections work today regardless of how many of these 7 slots are filled in.
+
+Each placeholder is clearly marked in the platform itself, so none of them will be mistaken
+for finished content if presented as-is.
 
 ## Filling in what's left
 
 Send me:
-1. Your SAP Business Data Cloud slides/content
-2. The workshop PDF ("Create Joule Agents and Skills for SAP SuccessFactors with SAP Build")
-3. A working link (WeTransfer or similar) to the two Joule for Developers videos, if you'd
+1. The workshop PDF ("Create Joule Agents and Skills for SAP SuccessFactors with SAP Build")
+2. A working link (WeTransfer or similar) to any of the 7 placeholder videos above, if you'd
    rather I wire them in than do it yourself per the steps above
 
 and I'll drop them into the existing structure in place — no rebuild of the rest of the platform

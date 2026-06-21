@@ -9,6 +9,30 @@
    slot, per the agreed structure.
    ============================================================ */
 
+/* ---------- Interactive AI insight tabs for the opening storytelling page ---------- */
+const OPENER_INSIGHTS = [
+  {
+    label: 'Financial Investment',
+    text: `AMG already monitors performance and benchmarks every portfolio company. AI doesn't replace that judgment — it removes the lag between a signal appearing <em>anywhere</em> in the Group (a bank's exposure, a build cost in Egypt, a market shift in Real Estate) and a decision-maker seeing it. One picture, every sector, continuously.`,
+    signal: `Live signal: a covenant shift at one bank surfaces group-wide exposure before quarter close, not after.`
+  },
+  {
+    label: 'Food & Consumer',
+    text: `Mayar Foods alone holds a 22% share of the Saudi rice market; Savola's stakes in Almarai and Herfy span dairy and quick-service food; Panda Retail moves household goods through stores trusted in 30 countries. AI ties demand signals from the shelf back to procurement and the balance sheet in one motion, instead of three separate monthly reports arriving three different ways.`,
+    signal: `Live signal: a demand spike at Panda is matched against Mayar's rice supply position the same day, not at next month's review.`
+  },
+  {
+    label: 'Industrial & Infrastructure',
+    text: `From Al Yamamah Steel to Acwa, Bawan, and DataVolt, the Industrial &amp; Infrastructure sector runs on long, capital-heavy cycles where a single delayed shipment or energy-price swing can ripple across multiple plants at once. AI watches those cycles continuously, so a cost pressure in one facility is visible across the whole portfolio <em>before</em> it shows up in next quarter's numbers.`,
+    signal: `Live signal: a raw-material cost spike at one steel facility flags margin risk across every linked project, in real time.`
+  },
+  {
+    label: 'Real Estate',
+    text: `Rafal, Thabat, and Ajdan each run multi-year developments — like Burj Rafal or the new $5bn Oman venture — where construction pace, financing cost, and market demand all move independently. AI ties those threads together as they happen, turning scattered project updates into one live read on the whole development pipeline.`,
+    signal: `Live signal: a financing-rate move is matched instantly against every active development's exposure, not discovered at the next review.`
+  }
+];
+
 const JOURNEY_SECTIONS = [
 
 /* ============================================================
@@ -57,9 +81,22 @@ const JOURNEY_SECTIONS = [
           <div class="opener__stat"><div class="opener__stat-num">10+</div><div class="opener__stat-label">banking, VC &amp; PE relationships in Financial Investment alone</div></div>
           <div class="opener__stat"><div class="opener__stat-num">1</div><div class="opener__stat-label">foundation needed to see it all at once</div></div>
         </div>
-        <div class="opener__insight">
-          <div class="opener__insight-title">The AI insight</div>
-          <p class="opener__insight-text">AMG already monitors performance and benchmarks every portfolio company. AI doesn't replace that judgment — it removes the lag between a signal appearing <em>anywhere</em> in the Group (a bank's exposure, a build cost in Egypt, a market shift in Real Estate) and a decision-maker seeing it. One picture, every sector, continuously.</p>
+        <div class="opener__insight" id="openerInsight">
+          <div class="opener__insight-head">
+            <div class="opener__insight-title">The AI insight</div>
+            <div class="opener__insight-tabs" id="openerInsightTabs">
+              <button class="opener__insight-tab is-active" data-insight="0" aria-label="Financial Investment insight">Financial Investment</button>
+              <button class="opener__insight-tab" data-insight="1" aria-label="Food &amp; Consumer insight">Food &amp; Consumer</button>
+              <button class="opener__insight-tab" data-insight="2" aria-label="Industrial &amp; Infrastructure insight">Industrial &amp; Infrastructure</button>
+              <button class="opener__insight-tab" data-insight="3" aria-label="Real Estate insight">Real Estate</button>
+            </div>
+          </div>
+          <p class="opener__insight-text" id="openerInsightText">AMG already monitors performance and benchmarks every portfolio company. AI doesn't replace that judgment — it removes the lag between a signal appearing <em>anywhere</em> in the Group (a bank's exposure, a build cost in Egypt, a market shift in Real Estate) and a decision-maker seeing it. One picture, every sector, continuously.</p>
+          <div class="opener__insight-signal" id="openerInsightSignal">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M13 2L3 14h8l-1 8 10-12h-8l1-8z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+            <span>Live signal: a covenant shift at one bank surfaces group-wide exposure before quarter close, not after.</span>
+          </div>
+          <div class="opener__insight-dots" id="openerInsightDots" role="tablist" aria-label="Auto-rotating sector insights"></div>
         </div>
       </div>
 
@@ -126,7 +163,7 @@ const JOURNEY_SECTIONS = [
 },
 
 /* ============================================================
-   03 — SAP BUSINESS DATA CLOUD (placeholder — content pending)
+   03 — SAP BUSINESS DATA CLOUD
    ============================================================ */
 {
   id: 'bdc',
@@ -139,9 +176,74 @@ const JOURNEY_SECTIONS = [
       <p class="subhead">The unified data foundation that makes everything that follows possible.</p>
     </div>
 
-    <div class="placeholder-banner">
-      <svg viewBox="0 0 24 24" fill="none"><path d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      <p>This section is reserved for your SAP Business Data Cloud content. Once you share the source material, it will be built into this slot using the same interactive storytelling style as the rest of the journey — keeping its place in the sequence right after the Al Muhaidib use case and team introduction.</p>
+    <div class="diagram-panel" style="margin-bottom:36px;">
+      <img src="media/img/bdc-architecture.png" alt="SAP Business Data Cloud architecture — AI Agents (Joule Agents, Intelligent content), Knowledge Core (SAP Datasphere, SAP Analytics Cloud), and Intelligent Compute (SAP HANA Cloud, SAP Databricks, SAP Snowflake), built on Business Data Fabric and Master Data Governance" loading="lazy">
+    </div>
+
+    <div class="section-head">
+      <div class="eyebrow">See it live</div>
+      <h3 class="headline" style="font-size:clamp(24px,2.8vw,32px);">Inside SAP Business Data Cloud</h3>
+    </div>
+
+    <div style="margin-bottom:36px;">
+      <div class="grid grid-2">
+        <div>
+          <div class="video-frame" data-video-id="v-bdc-just-ask" data-modal="true">
+            <video src="media/video/just-ask.mp4" data-src="media/video/just-ask.mp4" preload="none" playsinline></video>
+            <button class="video-frame__play" aria-label="Play Just Ask demo">
+              <span class="video-frame__play-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M8 5v14l11-7-11-7z" fill="currentColor"/></svg></span>
+            </button>
+            <span class="video-frame__label"><span class="rec-dot"></span> Just Ask</span>
+          </div>
+          <p class="video-caption">Just Ask — asking SAP Business Data Cloud a question in plain language and getting a governed answer back.</p>
+        </div>
+        <div>
+          <div class="video-frame" data-video-id="v-bdc-investment-details" data-modal="true">
+            <video src="media/video/investment-details.mp4" data-src="media/video/investment-details.mp4" preload="none" playsinline></video>
+            <button class="video-frame__play" aria-label="Play Investment Details demo">
+              <span class="video-frame__play-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M8 5v14l11-7-11-7z" fill="currentColor"/></svg></span>
+            </button>
+            <span class="video-frame__label"><span class="rec-dot"></span> Investment Details</span>
+          </div>
+          <p class="video-caption">Investment Details — drilling into a single investment with full context, sourced from the unified data foundation.</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:36px;">
+      <div class="grid grid-2">
+        <div>
+          <div class="video-frame" data-video-id="v-bdc-financial-statement" data-modal="true">
+            <video src="media/video/financial-statement.mp4" data-src="media/video/financial-statement.mp4" preload="none" playsinline></video>
+            <button class="video-frame__play" aria-label="Play Financial Statement demo">
+              <span class="video-frame__play-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M8 5v14l11-7-11-7z" fill="currentColor"/></svg></span>
+            </button>
+            <span class="video-frame__label"><span class="rec-dot"></span> Financial Statement</span>
+          </div>
+          <p class="video-caption">Financial Statement — a consolidated financial view built on governed, AI-ready data.</p>
+        </div>
+        <div>
+          <div class="video-frame" data-video-id="v-bdc-compass-simulation" data-modal="true">
+            <video src="media/video/compass-simulation.mp4" data-src="media/video/compass-simulation.mp4" preload="none" playsinline></video>
+            <button class="video-frame__play" aria-label="Play Compass Simulation demo">
+              <span class="video-frame__play-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M8 5v14l11-7-11-7z" fill="currentColor"/></svg></span>
+            </button>
+            <span class="video-frame__label"><span class="rec-dot"></span> Compass Simulation</span>
+          </div>
+          <p class="video-caption">Compass Simulation — modeling a scenario forward and seeing the impact ripple across the portfolio.</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:44px; max-width:calc(50% - 12px);">
+      <div class="video-frame" data-video-id="v-bdc-agh-landing" data-modal="true">
+        <video src="media/video/agh-landing-page.mp4" data-src="media/video/agh-landing-page.mp4" preload="none" playsinline></video>
+        <button class="video-frame__play" aria-label="Play AGH Landing Page demo">
+          <span class="video-frame__play-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M8 5v14l11-7-11-7z" fill="currentColor"/></svg></span>
+        </button>
+        <span class="video-frame__label"><span class="rec-dot"></span> AGH Landing Page</span>
+      </div>
+      <p class="video-caption">AGH Landing Page — the entry point into the experience, where the story begins.</p>
     </div>
 
     <div class="grid grid-3">
