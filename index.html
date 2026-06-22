@@ -1957,6 +1957,21 @@ const JOURNEY_SECTIONS = [
           <p class="video-caption">Just Ask — asking SAP Business Data Cloud a question in plain language and getting a governed answer back.</p>
         </div>
         <div>
+          <div class="video-frame" data-video-id="v-bdc-agh-landing" data-modal="true">
+            <video src="media/video/agh-landing-page.mp4" data-src="media/video/agh-landing-page.mp4" preload="none" playsinline></video>
+            <button class="video-frame__play" aria-label="Play AGH Landing Page demo">
+              <span class="video-frame__play-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M8 5v14l11-7-11-7z" fill="currentColor"/></svg></span>
+            </button>
+            <span class="video-frame__label"><span class="rec-dot"></span> AGH Landing Page</span>
+          </div>
+          <p class="video-caption">AGH Landing Page — the entry point into the experience, where the story begins.</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:36px;">
+      <div class="grid grid-2">
+        <div>
           <div class="video-frame" data-video-id="v-bdc-investment-details" data-modal="true">
             <video src="media/video/investment-details.mp4" data-src="media/video/investment-details.mp4" preload="none" playsinline></video>
             <button class="video-frame__play" aria-label="Play Investment Details demo">
@@ -1966,11 +1981,6 @@ const JOURNEY_SECTIONS = [
           </div>
           <p class="video-caption">Investment Details — drilling into a single investment with full context, sourced from the unified data foundation.</p>
         </div>
-      </div>
-    </div>
-
-    <div style="margin-bottom:36px;">
-      <div class="grid grid-2">
         <div>
           <div class="video-frame" data-video-id="v-bdc-financial-statement" data-modal="true">
             <video src="media/video/financial-statement.mp4" data-src="media/video/financial-statement.mp4" preload="none" playsinline></video>
@@ -1981,28 +1991,18 @@ const JOURNEY_SECTIONS = [
           </div>
           <p class="video-caption">Financial Statement — a consolidated financial view built on governed, AI-ready data.</p>
         </div>
-        <div>
-          <div class="video-frame" data-video-id="v-bdc-compass-simulation" data-modal="true">
-            <video src="media/video/compass-simulation.mp4" data-src="media/video/compass-simulation.mp4" preload="none" playsinline></video>
-            <button class="video-frame__play" aria-label="Play Compass Simulation demo">
-              <span class="video-frame__play-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M8 5v14l11-7-11-7z" fill="currentColor"/></svg></span>
-            </button>
-            <span class="video-frame__label"><span class="rec-dot"></span> Compass Simulation</span>
-          </div>
-          <p class="video-caption">Compass Simulation — modeling a scenario forward and seeing the impact ripple across the portfolio.</p>
-        </div>
       </div>
     </div>
 
     <div style="margin-bottom:44px; max-width:calc(50% - 12px);">
-      <div class="video-frame" data-video-id="v-bdc-agh-landing" data-modal="true">
-        <video src="media/video/agh-landing-page.mp4" data-src="media/video/agh-landing-page.mp4" preload="none" playsinline></video>
-        <button class="video-frame__play" aria-label="Play AGH Landing Page demo">
+      <div class="video-frame" data-video-id="v-bdc-compass-simulation" data-modal="true">
+        <video src="media/video/compass-simulation.mp4" data-src="media/video/compass-simulation.mp4" preload="none" playsinline></video>
+        <button class="video-frame__play" aria-label="Play Compass Simulation demo">
           <span class="video-frame__play-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M8 5v14l11-7-11-7z" fill="currentColor"/></svg></span>
         </button>
-        <span class="video-frame__label"><span class="rec-dot"></span> AGH Landing Page</span>
+        <span class="video-frame__label"><span class="rec-dot"></span> Compass Simulation</span>
       </div>
-      <p class="video-caption">AGH Landing Page — the entry point into the experience, where the story begins.</p>
+      <p class="video-caption">Compass Simulation — modeling a scenario forward and seeing the impact ripple across the portfolio.</p>
     </div>
 
     <div class="grid grid-3">
@@ -2223,7 +2223,7 @@ const JOURNEY_SECTIONS = [
       <img src="media/img/finance-domain-tabs.png" alt="Autonomous Finance domain tabs with Financial Planning, Revenue Management, Treasury, Accounting & Close, Governance, Tax & Trade process flow and assistant/agent tree" loading="lazy">
     </div>
 
-    <div style="margin-top:40px;">
+    <div style="margin-top:40px; display:none;">
       <div class="section-head">
         <div class="eyebrow">End to end</div>
         <h3 class="headline" style="font-size:clamp(24px,2.8vw,32px);">Record to Report, <em>covered by Assistants</em></h3>
@@ -2318,14 +2318,14 @@ const JOURNEY_SECTIONS = [
         <div>
           <div class="video-frame" data-video-id="v-ar-finance" data-modal="true">
             <video src="media/video/ar-finance-demo.mp4" data-src="media/video/ar-finance-demo.mp4" preload="none" playsinline></video>
-            <button class="video-frame__play" aria-label="Play Accounts Receivable demo">
+            <button class="video-frame__play" aria-label="Play Accounts Payable demo">
               <span class="video-frame__play-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M8 5v14l11-7-11-7z" fill="currentColor"/></svg></span>
             </button>
-            <span class="video-frame__label"><span class="rec-dot"></span> Accounts Receivable — S/4HANA Cloud</span>
+            <span class="video-frame__label"><span class="rec-dot"></span> Accounts Payable — S/4HANA Cloud</span>
           </div>
-          <p class="video-caption">A day in the life of an Accounts Receivable team — My Home, To-Dos, and Cash Management working together in one Fiori experience.</p>
+          <p class="video-caption">A day in the life of an Accounts Payable team — My Home, To-Dos, and Cash Management working together in one Fiori experience.</p>
         </div>
-        <div>
+        <div style="display:none;">
           <div class="video-frame" data-video-id="v-finance-today" data-modal="true">
             <video src="media/video/finance-today-demo.mp4" data-src="media/video/finance-today-demo.mp4" preload="none" playsinline></video>
             <button class="video-frame__play" aria-label="Play Finance overview demo">
@@ -2432,7 +2432,7 @@ const JOURNEY_SECTIONS = [
       <p class="subhead">The same Joule intelligence Al Muhaidib's business users rely on — purpose-built for SAP development teams, from full-stack application work to ABAP migration.</p>
     </div>
 
-      <div style="margin-bottom:32px;">
+    <div style="margin-bottom:32px;">
       <div class="video-frame" data-video-id="v-jfd-overview">
         <video src="media/video/joule-for-developers-overview.mp4" data-src="media/video/joule-for-developers-overview.mp4" preload="none" playsinline></video>
         <button class="video-frame__play" aria-label="Play Joule for Developers overview demo">
